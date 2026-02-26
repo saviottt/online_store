@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="form-container" style="max-width: 700px; padding: 4rem;">
+    <div class="badge-tag">PUBLISH</div>
+    <h2 style="font-size: 3rem; margin-top: 1rem;">New <span class="highlight">Entry</span>.</h2>
+    <p class="text-muted" style="margin-bottom: 3rem; border-bottom: 2px solid #1A1A1A; padding-bottom: 1.5rem;">Draft a
+        new item for the public ledger.</p>
+
+    <form action="/add_product" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="form-label" for="product_name">Product Nomenclature</label>
+            <input type="text" class="form-control" id="product_name" name="product_name"
+                placeholder="e.g. Mechanical Typewriter" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="price">Valuation ($)</label>
+            <input type="number" step="0.01" class="form-control" id="price" name="price" placeholder="199.99" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="description">Detailed Description</label>
+            <textarea class="form-control" id="description" name="description" rows="5"
+                placeholder="Document the specifications and history of the item..."></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 3rem;">
+            <label class="form-label" for="image">Visual Documentation</label>
+            <div style="border: 2px solid #1A1A1A; padding: 1rem; background: var(--bg-color);">
+                <input class="form-control" type="file" id="image" name="image" accept="image/*"
+                    style="border: none; padding: 0;">
+            </div>
+            <p class="text-muted" style="font-size: 0.85rem; margin-top: 0.5rem; font-family: 'Inter', sans-serif;">
+                (Optional) Attach an image of the artifact.</p>
+        </div>
+
+        <div
+            style="display: flex; gap: 1.5rem; justify-content: flex-end; align-items: center; border-top: 2px solid #1A1A1A; padding-top: 2rem;">
+            <a href="/dashboard" class="highlight"
+                style="font-weight: 700; text-decoration: none; text-transform: uppercase;">&larr; Abort</a>
+            <button type="submit" class="btn btn-primary">Archive Entry</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

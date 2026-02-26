@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="section-header">
+    <div>
+        <div class="badge-tag">CATALOG</div>
+        <h2 style="font-size: 4rem; margin-top: 1rem; line-height: 1;"><span class="highlight">The</span> Collection.
+        </h2>
+    </div>
+    <p class="text-muted" style="max-width: 300px; text-align: right; margin-bottom: 0;">Discover premium artifacts
+        curated by our distinct community of sellers.</p>
+</div>
+
+<div class="grid">
+    {% for product in products %}
+    <div class="card">
+
+        <div class="card-img-container">
+            {% if product[4] %}
+            <img src="{{ url_for('static', filename=product[4]) }}" class="card-img" alt="{{ product[1] }}">
+            {% else %}
+            <span class="text-muted uppercase" style="font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em;">Image
+                Unavailable</span>
+            {% endif %}
+
+            <!-- Issue number sticker effect -->
+            <div
+                style="position: absolute; bottom: 10px; left: 10px; background: #fff; border: 2px solid #1A1A1A; padding: 0.1rem 0.5rem; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.7rem;">
+                NO. {{ loop.index }}</div>
+        </div>
+
+        <div class="card-content">
+            <h4 class="card-title">{{ product[1] }}</h4>
+            <p class="text-muted" style="font-size: 0.95rem; margin-top: 0.5rem; line-height: 1.4;">{{ product[2] }}</p>
+            <div class="card-price">${{ product[3] }}</div>
+
+            <div class="card-actions" style="margin-top: 0; padding-top: 0; border: none;">
+                {% if session.get('role') == 'buyer' %}
+                <form action="{{ url_for('place_order', product_id=product[0]) }}" method="POST" style="width: 100%;">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Acquire Item</button>
+                </form>
+
+                {% elif session.get('role') == 'seller' and session.get('user_id') == product[5] %}
+                <div style="width: 100%; text-align: center; border: 2px dashed #1A1A1A; padding: 1rem 0;">
+                    <span class="uppercase text-muted" style="font-weight: 700; font-size: 0.8rem;">Published by
+                        You</span>
+                </div>
+
+                {% else %}
+                <a href="/login" class="btn" style="width: 100%;">Login to Acquire</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div style="grid-column: 1 / -1; text-align: center; padding: 6rem 0; border: 3px solid #1A1A1A;">
+        <h3 style="font-size: 2rem;">Archive Empty</h3>
+        <p class="text-muted">No items are currently listed in the catalog.</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

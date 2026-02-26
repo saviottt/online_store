@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextGen Editorial Store</title>
+    <!-- Custom Retro Editorial CSS -->
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+        <nav class="navbar">
+            <a class="navbar-brand" href="/">NEXTGEN STORE</a>
+
+            <div class="nav-links">
+                {% if session %}
+                <span class="text-muted highlight" style="margin-right: 1rem;">Welcome, {{ session['name'] }}</span>
+                <a href="/products">Shop</a>
+                {% if session.get('role') == 'seller' %}
+                <a href="/add_product" style="color: var(--accent-color);">Publish Work</a>
+                {% endif %}
+                <a href="/dashboard">Dashboard</a>
+                <a href="/logout" class="btn btn-accent" style="padding: 0.5rem 1.5rem; border-width: 2px;">Logout</a>
+                {% else %}
+                <a href="/login" class="btn" style="padding: 0.5rem 1.5rem; border-width: 2px;">Login</a>
+                <a href="/register" class="btn btn-primary"
+                    style="padding: 0.5rem 1.5rem; border-width: 2px;">Register</a>
+                {% endif %}
+            </div>
+        </nav>
+
+        <main class="animate-fade-in">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div style="margin-bottom: 2rem;">
+                {% for category, message in messages %}
+                <div
+                    class="alert alert-{{ 'success' if category == 'message' or category == 'success' else 'danger' }}">
+                    <span>{{ message }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <!-- Dynamic Content -->
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer style="margin-top: 6rem; padding: 3rem 0; border-top: 3px solid #1A1A1A; text-align: center;">
+            <p class="uppercase text-muted" style="font-size: 0.85rem; font-weight: 600;">© {{ range(2025, 2030) |
+                random }} NEXTGEN EDITORIAL STORE. All rights reserved.</p>
+        </footer>
+    </div>
+
+</body>
+
+</html>

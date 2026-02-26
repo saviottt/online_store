@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="section-header">
+    <div>
+        <div class="badge-tag">PORTAL</div>
+        <h2 style="font-size: 3rem; margin-top: 1rem;"><span class="highlight">Dashboard.</span></h2>
+    </div>
+    <p class="text-muted" style="margin-bottom: 0;">Logged in as: <strong>{{ role|capitalize }}</strong></p>
+</div>
+
+{% if role == 'seller' %}
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+    <h3 style="font-size: 2rem; margin-bottom: 0;">Curated <br>Collection.</h3>
+    <a href="/add_product" class="btn btn-primary">Publish New Work</a>
+</div>
+
+{% if products %}
+<div class="grid">
+    {% for p in products %}
+    <div class="card">
+        <div class="card-img-container">
+            {% if p[4] %}
+            <img src="{{ url_for('static', filename=p[4]) }}" class="card-img" alt="{{ p[1] }}">
+            {% else %}
+            <span class="text-muted uppercase" style="font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em;">Image
+                Unavailable</span>
+            {% endif %}
+        </div>
+        <div class="card-content">
+            <h4 class="card-title">{{ p[1] }}</h4>
+            <div class="card-price">${{ p[3] }}</div>
+
+            <div class="card-actions">
+                <a href="/edit_product/{{ p[0] }}" class="btn">Edit</a>
+                <form action="/delete_product/{{ p[0] }}" method="POST" style="flex-grow: 1;"
+                    onsubmit="return confirm('Confirm deletion of this record?');">
+                    <button type="submit" class="btn"
+                        style="width: 100%; color: #D95A2B; border-color: #D95A2B;">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div style="text-align: center; padding: 4rem 0; border: 2px dashed #1A1A1A; margin-top: 3rem;">
+    <p class="text-muted uppercase" style="font-weight: 600; font-size: 0.9rem;">Catalog Empty. Begin Curating.</p>
+</div>
+{% endif %}
+
+<hr>
+<div style="text-align: right;">
+    <a href="/orders" class="btn">View Ledgers (Orders)</a>
+</div>
+
+{% else %}
+<!-- Buyer Dashboard -->
+<div class="grid" style="grid-template-columns: 1fr 1fr; margin-top: 4rem;">
+    <div style="border: 3px solid #1A1A1A; padding: 3rem; text-align: center;">
+        <h3 style="font-size: 2.5rem; margin-bottom: 1rem;">The Shop.</h3>
+        <p class="text-muted" style="margin-bottom: 2rem;">Explore works from independent creators.</p>
+        <a href="/products" class="btn btn-primary">Browse Catalog</a>
+    </div>
+    <div style="border: 3px solid #1A1A1A; padding: 3rem; text-align: center;">
+        <h3 style="font-size: 2.5rem; margin-bottom: 1rem;">Ledger.</h3>
+        <p class="text-muted" style="margin-bottom: 2rem;">Track your acquired collection.</p>
+        <a href="/orders" class="btn">View Orders</a>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

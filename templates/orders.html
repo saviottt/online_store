@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="section-header">
+    <div>
+        <div class="badge-tag">RECORDS</div>
+        <h2 style="font-size: 3rem; margin-top: 1rem;">Transaction <span class="highlight">Ledger</span>.</h2>
+    </div>
+
+    <div style="text-align: right;">
+        <p class="text-muted" style="margin-bottom: 1rem;">
+            {% if session.get('role') == 'seller' %}
+            Log of fulfilled curation requests.
+            {% else %}
+            Log of your acquired artifacts.
+            {% endif %}
+        </p>
+        <a href="/dashboard" class="btn btn-accent" style="padding: 0.5rem 1.5rem;">&larr; Return to Dashboard</a>
+    </div>
+</div>
+
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>Reference No.</th>
+                <th>Artifact Nomenclature</th>
+                {% if session.get('role') == 'seller' %}
+                <th>Patron (Buyer)</th>
+                {% else %}
+                <th>Curator (Seller)</th>
+                {% endif %}
+                <th>Fulfillment Status</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.1rem;">#{{ order[0] }}</td>
+                <td style="font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.2rem;">{{ order[2] }}
+                </td>
+
+                {% if session.get('role') == 'seller' %}
+                <td>{{ order[1] }}</td>
+                {% else %}
+                <td>{{ order[3] }}</td>
+                {% endif %}
+
+                <td>
+                    <span class="status-badge 
+                        {% if order[4] == 'Pending' %}status-pending
+                        {% elif order[4] == 'Shipped' or order[4] == 'Delivered' %}status-shipped
+                        {% endif %}">
+                        {{ order[4] }}
+                    </span>
+                </td>
+                <td style="font-size: 0.9rem; color: var(--text-muted);">{{ order[5] }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5"
+                    style="text-align: center; padding: 4rem; font-style: italic; color: var(--text-muted);">No
+                    transactions recorded in the ledger.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

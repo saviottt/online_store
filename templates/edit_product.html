@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="form-container" style="max-width: 700px; padding: 4rem;">
+    <div class="badge-tag" style="background: var(--accent-secondary);">REVISE</div>
+    <h2 style="font-size: 3rem; margin-top: 1rem;">Edit <span class="highlight">Record</span>.</h2>
+    <p class="text-muted" style="margin-bottom: 3rem; border-bottom: 2px solid #1A1A1A; padding-bottom: 1.5rem;">
+        Updating the ledger for: <strong>{{ product[1] }}</strong></p>
+
+    <form action="/edit_product/{{ product[0] }}" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="form-label" for="product_name">Product Nomenclature</label>
+            <input type="text" class="form-control" id="product_name" name="product_name" value="{{ product[1] }}"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="price">Valuation ($)</label>
+            <input type="number" step="0.01" class="form-control" id="price" name="price" value="{{ product[3] }}"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="description">Detailed Description</label>
+            <textarea class="form-control" id="description" name="description" rows="5">{{ product[2] }}</textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 3rem;">
+            <label class="form-label" for="image">Visual Documentation</label>
+            <div style="border: 2px solid #1A1A1A; padding: 2rem; background: var(--bg-color); text-align: center;">
+
+                {% if product[4] %}
+                <div style="margin-bottom: 1.5rem; display: inline-block; position: relative;">
+                    <img src="{{ url_for('static', filename=product[4]) }}" alt="Archived Image"
+                        style="max-height: 150px; border: 3px solid #1A1A1A; box-shadow: 4px 4px 0 #1A1A1A;">
+                    <div class="badge-tag"
+                        style="position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); white-space: nowrap;">
+                        CURRENT FILE</div>
+                </div>
+                {% endif %}
+
+                <input class="form-control" type="file" id="image" name="image" accept="image/*"
+                    style="border: none; padding: 0; background: transparent;">
+                <p class="text-muted"
+                    style="font-size: 0.85rem; margin-top: 1rem; font-family: 'Inter', sans-serif; text-align: left;">
+                    Upload a replacement image, or leave void to retain the current visual record.</p>
+            </div>
+        </div>
+
+        <div
+            style="display: flex; gap: 1.5rem; justify-content: flex-end; align-items: center; border-top: 2px solid #1A1A1A; padding-top: 2rem;">
+            <a href="/dashboard" class="highlight"
+                style="font-weight: 700; text-decoration: none; text-transform: uppercase;">&larr; Cancel Revision</a>
+            <button type="submit" class="btn btn-primary">Commit Amendments</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
